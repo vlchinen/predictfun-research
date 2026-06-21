@@ -1,0 +1,19 @@
+{
+  "name": "predictfun-research",
+  "version": "1.0.0",
+  "description": "Research documentation and technical analysis of predict.fun architecture, authentication, account abstraction, and trading workflows.",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"No tests configured\""
+  },
+  "keywords": [
+    "web3",
+    "account-abstraction",
+    "smart-wallet",
+    "siwe",
+    "privy",
+    "research"
+  ],
+  "author": "",
+  "license": "MIT"
+}

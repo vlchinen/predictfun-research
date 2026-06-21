@@ -1,122 +1,100 @@
-# Predict.fun Research
+# predictfun-research
 
-Research repository exploring the architecture, authentication flow, account abstraction design, and trading infrastructure of Predict.fun.
+Technical research repository analyzing modern Web3 application architecture patterns.
 
-This repository focuses on understanding how modern Web3 applications combine:
+The repository documents architectural concepts around:
 
-- Embedded wallets
-- Smart accounts
-- EIP-4337 Account Abstraction
-- Privy authentication infrastructure
-- Session management
-- UserOperation lifecycle
-- Market interaction workflows
+- Wallet authentication
+- SIWE based identity flows
+- Embedded wallet infrastructure
+- Account abstraction
+- Smart account execution
+- Trading application workflows
 
-## Overview
+## Scope
 
-Modern Web3 applications are moving away from traditional externally owned accounts (EOA) toward embedded wallet architectures.
+This project focuses on understanding system design patterns used by consumer Web3 applications.
 
-This repository documents and implements research around:
+Topics covered:
 
-```
-User
-|
-| Authentication
-|
-Privy Identity Layer
-|
-| Wallet Provisioning
-|
-Embedded Wallet
-|
-| Smart Account
-|
-ERC-4337 Account Abstraction
-|
-| UserOperation
-|
-Blockchain Settlement
-```
+- Authentication architecture
+- Identity management
+- Wallet abstraction
+- Transaction execution models
+- Application API communication
+- Trading lifecycle design
+
 
 ## Repository Structure
 
+
+predictfun-research/
 ```
-docs/
-├── authentication-flow.md
-├── account-abstraction.md
-├── architecture.md
-└── trading-workflow.md
+├── docs/
+│ ├── architecture.md
+│ ├── authentication-flow.md
+│ ├── account-abstraction.md
+│ └── trading-workflow.md
 
-research/
-├── privy-analysis.md
-├── embedded-wallets.md
-└── settlement-flow.md
+├── research/
+│ ├── embedded-wallets.md
+│ ├── privy-analysis.md
+│ └── settlement-flow.md
 
-src/
-├── auth/
-│ └── session.js
-│
-├── account/
-│ ├── predictAccount.js
-│ └── userOperation.js
-│
-├── trading/
-│ ├── createOrder.js
-│ ├── portfolio.js
-│ └── withdraw.js
-│
-└── utils/
-└── provider.js
+├── src/
+│ ├── account/
+│ ├── auth/
+│ ├── trading/
+│ └── utils/
 
-examples/
-├── login-example.js
-├── trade-lifecycle.js
-└── withdraw-example.js
+└── examples/
 ```
 
-
-## Research Topics
+## Research Areas
 
 ### Authentication
 
 Analysis of:
 
-- SIWE authentication flow
+- Sign-In With Ethereum (SIWE)
 - Session lifecycle
-- Identity token handling
-- Wallet linking architecture
+- Wallet identity linking
+- Application authorization
 
-### Embedded Wallets
-
-Research around:
-
-- Privy-managed wallets
-- Wallet ownership model
-- Smart account derivation
-- Account abstraction patterns
 
 ### Account Abstraction
 
-Implementation notes covering:
-
-- ERC-4337 UserOperation structure
-- EntryPoint interaction
-- Gas sponsorship
-- Signature flow
-
-### Trading Infrastructure
-
 Research around:
 
-- Order creation lifecycle
-- Typed data signing
-- Market data handling
-- Settlement workflow
+- Smart accounts
+- UserOperation flow
+- Bundler architecture
+- EntryPoint execution model
+
+
+### Trading Systems
+
+Documentation of:
+
+- Order lifecycle
+- Portfolio management
+- Withdrawal workflows
+- Application-to-chain execution
+
 
 ## Disclaimer
 
-This repository is for educational and research purposes.
+This repository contains educational research and architectural analysis.
 
-No production credentials, private keys, authentication secrets, or sensitive service data are included.
+It does not include:
 
-The implementation focuses on understanding architecture and integration patterns used by modern Web3 applications.
+- Private keys
+- Credentials
+- Production secrets
+- User data
+- Unauthorized access methods
+
+
+## License
+
+MIT
