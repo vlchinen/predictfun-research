@@ -2,50 +2,49 @@
 
 ## Overview
 
-Predict.fun architecture combines multiple layers:
+Predict.fun architecture combines multiple decentralized application layers:
 
-- Wallet authentication
+- Wallet authentication and identity management
 - Embedded wallet infrastructure
-- Smart account execution
-- Application APIs
-- Blockchain settlement
+- Account abstraction execution
+- Application API services
+- Blockchain settlement layer
 
-The system separates identity, execution, and ownership layers.
+The architecture separates three major responsibilities:
 
----
+1. Identity - proving who the user is
+2. Execution - performing blockchain actions
+3. Ownership - maintaining cryptographic control
 
 # High Level Architecture
 
 
-User Wallet
+External Wallet
 ```
-  |
   |
   v
 ```
 Authentication Layer
 (SIWE / Privy)
 ```
-  |
-  |
-  v
+|
+v
 ```
-Application Layer
-(GraphQL / REST APIs)
-```
-  |
-  |
-  v
-```
-Account Abstraction Layer
-(Smart Account / UserOperation)
-```
-  |
-  |
-  v
-```
-Blockchain Execution
 
+Application Identity
+(User Account / Linked Wallet)
+```
+  |
+  v
+```
+Smart Account Layer
+(UserOperation / EntryPoint)
+```
+|
+v
+```
+
+Blockchain Settlement
 
 ---
 
@@ -91,6 +90,9 @@ Benefits:
 - Application controlled workflows
 - Support for account abstraction
 
+The embedded wallet does not replace cryptographic ownership.
+
+Instead, it provides a user-friendly identity layer that can later interact with smart account infrastructure.
 ---
 
 # 3. Application API Layer
@@ -144,6 +146,30 @@ This allows:
 - Programmable account logic
 - Improved UX
 
+
+The execution model follows the ERC-4337 account abstraction pattern.
+
+Instead of traditional transactions:
+```
+EOA
+ |
+Transaction
+ |
+Blockchain
+
+
+The system uses:
+
+UserOperation
+ |
+Bundler
+ |
+EntryPoint
+ |
+Smart Account
+ |
+Blockchain
+```
 ---
 
 # 5. Execution Flow
