@@ -35,6 +35,7 @@ predictfun-research/
 │ ├── authentication-flow.md
 │ ├── account-abstraction.md
 │ └── trading-workflow.md
+│ └── research-methodology.md
 
 ├── research/
 │ ├── embedded-wallets.md
