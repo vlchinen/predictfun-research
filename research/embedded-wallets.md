@@ -21,20 +21,20 @@ Traditional Web3 onboarding:
 
 
 User
-
+```
 |
 v
-
+```
 Wallet Extension
-
+```
 |
 v
-
+```
 EOA Address
-
+```
 |
 v
-
+```
 Transaction Signing
 
 
@@ -52,20 +52,20 @@ Embedded wallet architecture:
 
 
 User Identity
-
+```
   |
   v
-
+```
 Embedded Wallet Service
-
+```
   |
   v
-
+```
 Wallet Account
-
+```
   |
   v
-
+```
 Application Execution
 
 
@@ -81,17 +81,17 @@ Conceptually:
 
 
 Identity Layer
-
+```
 |
 |
 v
-
+```
 Wallet Layer
-
+```
 |
 |
 v
-
+```
 Execution Layer
 
 
@@ -112,20 +112,20 @@ Architecture:
 
 
 Embedded Wallet
-
+```
   |
   v
-
+```
 Smart Account
-
+```
   |
   v
-
+```
 EntryPoint
-
+```
   |
   v
-
+```
 Blockchain
 
 
@@ -177,17 +177,17 @@ The architectural transition:
 
 Traditional:
 
-
+```
 User
 |
 Wallet Extension
 |
 Blockchain
-
+```
 
 Modern:
 
-
+```
 User Identity
 |
 Embedded Wallet
@@ -195,6 +195,6 @@ Embedded Wallet
 Smart Account
 |
 Blockchain
-
+```
 
 This model enables applications to provide simplified onboarding while preserving cryptographic ownersh
