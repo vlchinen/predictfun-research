@@ -1,100 +1,57 @@
 # predictfun-research
 
-Technical research repository analyzing modern Web3 application architecture patterns.
+A technical breakdown of how Predict.fun's wallet, authentication, and trading systems fit together — built while developing automation around the platform.
 
-The repository documents architectural concepts around:
-
-- Wallet authentication
-- SIWE based identity flows
-- Embedded wallet infrastructure
-- Account abstraction
-- Smart account execution
-- Trading application workflows
+This repository documents the architecture I needed to understand in order to automate wallet operations, trading, and withdrawals: SIWE-based authentication, Privy's embedded wallet model, account abstraction (ERC-4337), and the order/settlement lifecycle.
 
 ## Scope
 
-This project focuses on understanding system design patterns used by consumer Web3 applications.
-
-Topics covered:
-
-- Authentication architecture
-- Identity management
-- Wallet abstraction
-- Transaction execution models
-- Application API communication
-- Trading lifecycle design
-
+- Authentication architecture (SIWE, Privy, session lifecycle)
+- Embedded wallets and identity management
+- Account abstraction (UserOperation, Bundler, EntryPoint)
+- Trading lifecycle (order creation, execution, settlement, withdrawals)
 
 ## Repository Structure
 
-
+```
 predictfun-research/
-```
 ├── docs/
-│ ├── architecture.md
-│ ├── authentication-flow.md
-│ ├── account-abstraction.md
-│ └── trading-workflow.md
-│ └── research-methodology.md
-
+│   ├── architecture.md
+│   ├── authentication-flow.md
+│   ├── account-abstraction.md
+│   ├── trading-workflow.md
+│   └── research-methodology.md
 ├── research/
-│ ├── embedded-wallets.md
-│ ├── privy-analysis.md
-│ └── settlement-flow.md
-
+│   ├── embedded-wallets.md
+│   ├── privy-analysis.md
+│   └── settlement-flow.md
 ├── src/
-│ ├── account/
-│ ├── auth/
-│ ├── trading/
-│ └── utils/
-
-└── examples/
+│   ├── account/        # smart account / UserOperation structure
+│   ├── auth/           # session handling skeleton (SIWE init/authenticate)
+│   ├── trading/        # order construction & withdrawal calldata structure
+│   └── utils/          # provider / chain config helpers
+└── examples/            # minimal usage demos with placeholder data
 ```
 
-## Research Areas
+## What's Here vs. What Isn't
 
-### Authentication
+The `docs/` and `research/` notes describe the architecture in depth — how authentication, identity, and execution layers interact.
 
-Analysis of:
+The `src/` and `examples/` code shows the **structure** of each piece (request shapes, payload construction, UserOperation lifecycle) — not a working, drop-in automation tool. Order signing domains/types, smart account address derivation, and live endpoints are intentionally left as implementation details rather than hardcoded, since those are specific to the production system.
 
-- Sign-In With Ethereum (SIWE)
-- Session lifecycle
-- Wallet identity linking
-- Application authorization
+## How I Used This
 
-
-### Account Abstraction
-
-Research around:
-
-- Smart accounts
-- UserOperation flow
-- Bundler architecture
-- EntryPoint execution model
-
-
-### Trading Systems
-
-Documentation of:
-
-- Order lifecycle
-- Portfolio management
-- Withdrawal workflows
-- Application-to-chain execution
-
+Building automation against an undocumented system meant working backwards from observed behavior: tracing requests, forming a hypothesis about what each layer expected, testing it, and adjusting when it didn't hold. This repository is the architecture model that came out of that process — useful for understanding *how* the pieces fit together, even though it isn't a turnkey tool.
 
 ## Disclaimer
 
-This repository contains educational research and architectural analysis.
-
-It does not include:
+This repository contains educational research and architectural analysis. It does not include:
 
 - Private keys
 - Credentials
 - Production secrets
 - User data
 - Unauthorized access methods
-
 
 ## License
 
