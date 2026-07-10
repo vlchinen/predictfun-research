@@ -8,7 +8,7 @@ This repository documents the architecture I needed to understand in order to au
 
 - Authentication architecture (SIWE, Privy, session lifecycle)
 - Embedded wallets and identity management
-- Account abstraction (UserOperation, Bundler, EntryPoint)
+- Account abstraction (UserOperation, Bundler, EntryPoint, 2D nonces, counterfactual address resolution, EIP-4337 v0.7 UserOperation hashing)
 - Trading lifecycle (order creation, execution, settlement, withdrawals)
 
 ## Repository Structure
@@ -26,7 +26,13 @@ predictfun-research/
 │   ├── privy-analysis.md
 │   └── settlement-flow.md
 ├── src/
-│   ├── account/        # smart account / UserOperation structure
+│   ├── account/
+│   │   ├── predictAccount.js         # smart account model
+│   │   ├── userOperation.js          # UserOperation builder
+│   │   ├── nonce.js                  # EntryPoint 2D nonce (key/sequence)
+│   │   ├── counterfactualAddress.js  # getSenderAddress revert-decode pattern
+│   │   ├── hash.js                   # EIP-4337 v0.7 PackedUserOperation hashing
+│   │   └── bundler.js                # standard bundler JSON-RPC client
 │   ├── auth/           # session handling skeleton (SIWE init/authenticate)
 │   ├── trading/        # order construction & withdrawal calldata structure
 │   └── utils/          # provider / chain config helpers
@@ -37,7 +43,9 @@ predictfun-research/
 
 The `docs/` and `research/` notes describe the architecture in depth — how authentication, identity, and execution layers interact.
 
-The `src/` and `examples/` code shows the **structure** of each piece (request shapes, payload construction, UserOperation lifecycle) — not a working, drop-in automation tool. Order signing domains/types, smart account address derivation, and live endpoints are intentionally left as implementation details rather than hardcoded, since those are specific to the production system.
+The `src/` and `examples/` code shows the **structure** of each piece (request shapes, payload construction, UserOperation lifecycle) — not a working, drop-in automation tool. Order signing domains/types, smart account address derivation for the production system, and live endpoints are intentionally left as implementation details rather than hardcoded, since those are specific to Predict.fun's deployment.
+
+The `src/account/` nonce, hash, and counterfactual-address modules are an exception: they implement the actual EIP-4337 v0.7 EntryPoint interface (2D nonce packing, `getSenderAddress` revert decoding, `PackedUserOperation` hashing) rather than a simplified placeholder, since that logic is protocol-level and not specific to any one production system.
 
 ## How I Used This
 

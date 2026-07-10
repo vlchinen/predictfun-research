@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"No tests configured\""
   },
+  "dependencies": {
+    "ethers": "^6.13.0"
+  },
   "keywords": [
     "web3",
     "account-abstraction",

@@ -127,6 +127,125 @@ Smart Account Validation
       v
 ```
 Execute Call
+Nonce Model (2D Nonces)
+
+ERC-4337 nonces are not a simple incrementing counter. The EntryPoint exposes:
+
+```
+function getNonce(address sender, uint192 key) view returns (uint256)
+```
+
+The returned `uint256` packs two values:
+
+```
+nonce = (key << 64) | sequence
+```
+
+- `key` (`uint192`) — an application-chosen namespace. Different validators or modules on the same smart account can maintain independent nonce sequences by using different keys.
+- `sequence` (`uint64`) — increments per UserOperation within that key.
+
+This lets a smart account run multiple independent nonce tracks in parallel, instead of being limited to a single global counter like an EOA.
+
+---
+
+Counterfactual Address Derivation
+
+Smart accounts are deployed lazily — the address is known before the contract exists, since it is derived deterministically (CREATE2) from the factory address, factory init parameters, and a salt.
+
+The EntryPoint standardizes how a caller resolves this address without deploying anything, via:
+
+```
+function getSenderAddress(bytes calldata initCode)
+```
+
+`getSenderAddress` is designed to always revert, carrying the predicted address inside a custom error:
+
+```
+error SenderAddressResult(address sender)
+```
+
+The caller decodes the address out of the revert data instead of a normal return value. This "revert-to-return-data" pattern avoids requiring a view-safe computation path in the EntryPoint for every possible factory implementation, while still letting any client resolve the eventual account address off-chain.
+
+`initCode` itself is just `factoryAddress + factoryCalldata` — the calldata the factory receives on first use to actually deploy the account.
+
+---
+
+PackedUserOperation Hash (EIP-4337 v0.7)
+
+Since EntryPoint v0.7, gas-related fields are packed into `bytes32` slots rather than passed as separate `uint256` values, reducing calldata size:
+
+```
+accountGasLimits = (verificationGasLimit << 128) | callGasLimit
+gasFees          = (maxPriorityFeePerGas << 128) | maxFeePerGas
+```
+
+The UserOperation hash used for signing is computed in two stages:
+
+```
+innerHash = keccak256(
+  abi.encode(
+    sender, nonce,
+    keccak256(initCode),
+    keccak256(callData),
+    accountGasLimits,
+    preVerificationGas,
+    gasFees,
+    keccak256(paymasterAndData)
+  )
+)
+
+userOpHash = keccak256(
+  abi.encode(innerHash, entryPointAddress, chainId)
+)
+```
+
+Binding the hash to `entryPointAddress` and `chainId` prevents a signed UserOperation from being replayed against a different EntryPoint deployment or a different chain.
+
+`paymasterAndData` concatenates the paymaster address with its packed verification/postOp gas limits and any paymaster-specific data — the same packing approach used for the account's own gas limits above.
+
+---
+
+Bundler RPC Interface
+
+Bundlers expose a JSON-RPC interface. ERC-4337 defines the standard methods:
+
+```
+eth_sendUserOperation
+eth_estimateUserOperationGas
+eth_getUserOperationByHash
+eth_getUserOperationReceipt
+eth_supportedEntryPoints
+```
+
+Many bundler providers add vendor-specific methods on top of this — for example, gas price oracles tuned for UserOperations, or an RPC method to request paymaster sponsorship before submission. These are provider extensions, not part of the ERC-4337 standard, so exact method names and payload shapes vary between vendors.
+
+A sponsored UserOperation flow typically looks like:
+
+```
+Build UserOperation (unsigned, gas fields empty)
+        |
+        v
+Request gas price from bundler
+        |
+        v
+Request paymaster sponsorship
+  (returns gas limits + paymasterAndData)
+        |
+        v
+Compute UserOperation hash
+        |
+        v
+Sign hash with account owner key
+        |
+        v
+Submit via eth_sendUserOperation
+        |
+        v
+Poll eth_getUserOperationReceipt
+```
+
+---
+
 Gas Sponsorship
 
 Account abstraction enables third parties to sponsor gas costs.
